@@ -1,0 +1,16 @@
+# Ignore Python cache files
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environment folder
+venv/
+.env
+.Pipfile
+Pipfile.lock
+
+# Ignore other unnecessary or OS-specific files
+.DS_Store
+*.log
+
+# Ignore .env if storing sensitive config variables in it
+.env
