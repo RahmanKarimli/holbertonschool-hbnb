@@ -1,4 +1,4 @@
-from app.models import BaseModel
+from app.models import BaseModel, amenity
 from app.models.user import User
 
 
@@ -40,3 +40,7 @@ class Place(BaseModel):
         if not isinstance(amenity, Amenity):
             raise ValueError("Amenity must be a valid Amenity instance")
         self.amenities.append(amenity)
+
+    def get_amenities(self):
+        print(f"THIS IS THE TYPE OF SELF>AMENITIES: {type(self.amenities[0])}")
+        return [{"id": amenity.id, "name": amenity.name} for amenity in self.amenities]

@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 
+
 class Repository(ABC):
     @abstractmethod
     def add(self, obj):
@@ -42,7 +43,7 @@ class InMemoryRepository(Repository):
     def update(self, obj_id, data):
         obj = self.get(obj_id)
         if obj:
-            obj.update(data)
+            obj.update(data.__dict__)
 
     def delete(self, obj_id):
         if obj_id in self._storage:
