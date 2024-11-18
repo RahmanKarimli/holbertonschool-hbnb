@@ -1,4 +1,4 @@
-from app.models import BaseModel, amenity
+from app.models import BaseModel
 from app.models.user import User
 
 
@@ -30,7 +30,6 @@ class Place(BaseModel):
 
     def add_review(self, review):
         from app.models.review import Review
-        print(review.text)
         if not isinstance(review, Review):
             raise ValueError("Review must be a valid Review instance")
         self.reviews.append(review)
@@ -42,5 +41,7 @@ class Place(BaseModel):
         self.amenities.append(amenity)
 
     def get_amenities(self):
-        print(f"THIS IS THE TYPE OF SELF>AMENITIES: {type(self.amenities[0])}")
         return [{"id": amenity.id, "name": amenity.name} for amenity in self.amenities]
+
+    def get_reviews(self):
+        return [{"id": review.id, "text": review.text, "rating": review.rating} for review in self.reviews]
