@@ -1,5 +1,5 @@
-from app.models import BaseModel
-from app.models.user import User
+from part2.app.models import BaseModel
+from part2.app.models.user import User
 
 
 class Place(BaseModel):
@@ -29,13 +29,13 @@ class Place(BaseModel):
         owner.add_place(self)
 
     def add_review(self, review):
-        from app.models.review import Review
+        from part2.app.models.review import Review
         if not isinstance(review, Review):
             raise ValueError("Review must be a valid Review instance")
         self.reviews.append(review)
 
     def add_amenity(self, amenity):
-        from app.models.amenity import Amenity
+        from part2.app.models.amenity import Amenity
         if not isinstance(amenity, Amenity):
             raise ValueError("Amenity must be a valid Amenity instance")
         self.amenities.append(amenity)

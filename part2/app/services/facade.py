@@ -1,8 +1,8 @@
-from app.models.amenity import Amenity
-from app.models.place import Place
-from app.models.review import Review
-from app.models.user import User
-from app.persistence.repository import InMemoryRepository
+from part2.app.models.amenity import Amenity
+from part2.app.models.place import Place
+from part2.app.models.review import Review
+from part2.app.models.user import User
+from part2.app.persistence.repository import InMemoryRepository
 
 
 class HBnBFacade:

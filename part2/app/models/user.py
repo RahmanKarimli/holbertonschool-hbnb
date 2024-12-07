@@ -1,6 +1,6 @@
 import re
 
-from app.models import BaseModel
+from part2.app.models import BaseModel
 
 
 class User(BaseModel):
@@ -27,7 +27,7 @@ class User(BaseModel):
         User.users_set.add(self)
 
     def add_place(self, place):
-        from app.models.place import Place
+        from part2.app.models.place import Place
         if not isinstance(place, Place):
             raise ValueError("Place must be a valid Place instance")
         self.places.append(place)

@@ -1,7 +1,7 @@
-from app.models.user import User
-from app.models.place import Place
-from app.models.review import Review
-from app.models.amenity import Amenity
+from part2.app import User
+from part2.app import Place
+from part2.app.models.review import Review
+from part2.app.models.amenity import Amenity
 
 
 # Testing the User Class
