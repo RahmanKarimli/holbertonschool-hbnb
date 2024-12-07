@@ -1,6 +1,6 @@
-from part2.app.models import BaseModel
-from part2.app.models.place import Place
-from part2.app.models.user import User
+from part3.app.models import BaseModel
+from part3.app.models.place import Place
+from part3.app.models.user import User
 
 
 class Review(BaseModel):

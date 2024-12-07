@@ -1,12 +1,12 @@
+# models/user.py
 import re
-
-from part2.app.models import BaseModel
+from part3.app.models import BaseModel
 
 
 class User(BaseModel):
     users_set = set()
 
-    def __init__(self, first_name: str, last_name: str, email: str, is_admin=False):
+    def __init__(self, first_name: str, last_name: str, email: str, password: str, is_admin=False):
         super().__init__()
         valid = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email)
         if not isinstance(first_name, str) or not first_name or len(first_name) > 50:
@@ -26,8 +26,20 @@ class User(BaseModel):
         User.users_set.add(email)
         User.users_set.add(self)
 
+        self.hash_password(password)  # Hash password during initialization
+
     def add_place(self, place):
-        from part2.app.models.place import Place
+        from part3.app.models.place import Place
         if not isinstance(place, Place):
             raise ValueError("Place must be a valid Place instance")
         self.places.append(place)
+
+    def hash_password(self, password: str):
+        """Hashes the password before storing it."""
+        from part3.app import bcrypt
+        self.password = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def verify_password(self, password: str) -> bool:
+        """Verifies if the provided password matches the hashed password."""
+        from part3.app import bcrypt
+        return bcrypt.check_password_hash(self.password, password)
