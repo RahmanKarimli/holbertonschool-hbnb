@@ -10,6 +10,7 @@ from part3.app.api.v1.users import api as users_ns
 from part3.app.api.v1.places import api as places_ns
 from part3.app.api.v1.reviews import api as reviews_ns
 from part3.app.api.v1.auth import api as auth_ns
+from part3.app.api.v1.protected import api as protected_ns
 
 bcrypt = Bcrypt()
 jwt = JWTManager()
@@ -29,5 +30,6 @@ def create_app(config_class=DevelopmentConfig):
     api.add_namespace(places_ns, path='/api/v1/places')
     api.add_namespace(reviews_ns, path='/api/v1/reviews')
     api.add_namespace(auth_ns, path='/api/v1/auth')
+    api.add_namespace(protected_ns, path='/api/v1/protected')
 
     return app
