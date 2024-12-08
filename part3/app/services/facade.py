@@ -15,7 +15,8 @@ class HBnBFacade:
     # User
     # Placeholder method for creating a user
     def create_user(self, user_data):
-        user = User(first_name=user_data["first_name"], last_name=user_data["last_name"], email=user_data["email"], password=user_data["password"], is_admin=user_data.get("is_admin"))
+        user = User(first_name=user_data["first_name"], last_name=user_data["last_name"], email=user_data["email"],
+                    password=user_data["password"], is_admin=user_data.get("is_admin"))
         self.user_repo.add(user)
         return user
 
@@ -189,6 +190,3 @@ class HBnBFacade:
             self.place_repo.update(place.id, place)
         self.review_repo.delete(review_id)
         return True
-
-
-
