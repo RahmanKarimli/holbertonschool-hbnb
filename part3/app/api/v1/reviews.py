@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 from part3.app.services import facade
 
@@ -73,14 +73,21 @@ class ReviewResource(Resource):
         # Placeholder for the logic to update a review by ID
         try:
             current_user = get_jwt_identity()
-
+            claims = get_jwt()
             existing_review = facade.get_review(review_id)
+            review_data = api.payload
+
             if not existing_review:
                 return {'error': 'Review not found'}, 404
+            if claims.get("is_admin"):
+                review_data["user_id"] = existing_review.user.id
+                updated_review = facade.update_review(review_id, review_data)
+                return {"id": updated_review.id, "text": updated_review.text, "rating": updated_review.rating,
+                        "user_id": updated_review.user.id, "place_id": updated_review.place.id}, 200
+
+
             if existing_review.user.id != current_user:
                 return {'error': 'Unauthorized action'}, 403
-
-            review_data = api.payload
             review_data["user_id"] = current_user
 
             updated_review = facade.update_review(review_id, review_data)
@@ -96,10 +103,18 @@ class ReviewResource(Resource):
         """Delete a review"""
         # Placeholder for the logic to delete a review
         current_user = get_jwt_identity()
-
+        claims = get_jwt()
         existing_review = facade.get_review(review_id)
+
         if not existing_review:
             return {'error': 'Review not found'}, 404
+        if claims.get("is_admin"):
+            success = facade.delete_review(review_id)
+            if not success:
+                return {'error': 'Review not found'}, 404
+            return {"message": "Review deleted successfully"}, 200
+
+
         if existing_review.user.id != current_user:
             return {'error': 'Unauthorized action'}, 403
 

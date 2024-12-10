@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import jwt_required, get_jwt_identity, get_jwt
 
 from part3.app.services import facade
 
@@ -95,14 +95,26 @@ class PlaceResource(Resource):
         # Placeholder for the logic to update a place by ID
         try:
             current_user = get_jwt_identity()
-
+            claims = get_jwt()
             existing_place = facade.get_place(place_id)
+            place_data = api.payload
+
             if not existing_place:
                 return {'error': 'Place not found'}, 404
+            if claims.get("is_admin"):
+                place_data["owner_id"] = existing_place.owner.id
+                updated_place = facade.update_place(place_id, place_data)
+                return {'id': updated_place.id, 'title': updated_place.title,
+                        'owner': {"id": updated_place.owner.id, "first_name": updated_place.owner.first_name,
+                                  "last_name": updated_place.owner.last_name, "email": updated_place.owner.email},
+                        'description': updated_place.description,
+                        'price': updated_place.price, 'latitude': updated_place.latitude,
+                        'longitude': updated_place.longitude,
+                        'amenities': updated_place.get_amenities()}, 200
+
+
             if existing_place.owner.id != current_user:
                 return {'error': 'Unauthorized action'}, 403
-
-            place_data = api.payload
             place_data["owner_id"] = current_user
 
             updated_place = facade.update_place(place_id, place_data)
