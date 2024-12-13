@@ -2,15 +2,19 @@ from part3.app.models.amenity import Amenity
 from part3.app.models.place import Place
 from part3.app.models.review import Review
 from part3.app.models.user import User
-from part3.app.persistence.repository import InMemoryRepository
+
+from part3.app.services.repositories.user_repository import UserRepository
+from part3.app.services.repositories.place_repository import PlaceRepository
+from part3.app.services.repositories.review_repository import ReviewRepository
+from part3.app.services.repositories.amenity_repository import AmenityRepository
 
 
 class HBnBFacade:
     def __init__(self):
-        self.user_repo = InMemoryRepository()
-        self.place_repo = InMemoryRepository()
-        self.review_repo = InMemoryRepository()
-        self.amenity_repo = InMemoryRepository()
+        self.user_repo = UserRepository()
+        self.place_repo = PlaceRepository()
+        self.review_repo = ReviewRepository()
+        self.amenity_repo = AmenityRepository()
 
     # User
     # Placeholder method for creating a user
@@ -24,7 +28,7 @@ class HBnBFacade:
         return self.user_repo.get(user_id)
 
     def get_user_by_email(self, email):
-        return self.user_repo.get_by_attribute('email', email)
+        return self.user_repo.get_user_by_email(email)
 
     def get_all_users(self):
         return self.user_repo.get_all()
