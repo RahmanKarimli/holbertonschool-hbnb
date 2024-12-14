@@ -7,7 +7,7 @@ from part3.app.models import BaseModel
 
 
 class User(BaseModel):
-    __tablename__ = 'users'
+    __tablename__ = "users"
 
     first_name = Column(String(50), nullable=False)
     last_name = Column(String(50), nullable=False)
@@ -15,12 +15,12 @@ class User(BaseModel):
     password = Column(String(128), nullable=False)
     is_admin = Column(Boolean, default=False)
 
-    # If users have related "places", define the relationship here (update accordingly):
-    places = relationship('Place', backref='owner', lazy=True)
+    places = relationship("Place", back_populates="owner", lazy=True)
+    reviews = relationship("Review", back_populates="user", lazy=True)
 
     def __init__(self, first_name: str, last_name: str, email: str, password: str, is_admin=False):
         super().__init__()
-        valid = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email)
+        valid = re.match(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", email)
         if not isinstance(first_name, str) or not first_name or len(first_name) > 50:
             raise ValueError("First name is required and must be 50 characters or fewer")
         if not isinstance(last_name, str) or not last_name or len(last_name) > 50:
