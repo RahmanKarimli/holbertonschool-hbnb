@@ -1,10 +1,9 @@
-# models/user.py
 import re
 
 from sqlalchemy import Column, String, Boolean
 from sqlalchemy.orm import relationship
 
-from .baseclass import BaseModel
+from part3.app.models import BaseModel
 
 
 class User(BaseModel):
@@ -20,6 +19,7 @@ class User(BaseModel):
     places = relationship('Place', backref='owner', lazy=True)
 
     def __init__(self, first_name: str, last_name: str, email: str, password: str, is_admin=False):
+        super().__init__()
         valid = re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email)
         if not isinstance(first_name, str) or not first_name or len(first_name) > 50:
             raise ValueError("First name is required and must be 50 characters or fewer")
