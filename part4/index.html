@@ -7,22 +7,45 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="login.html" id="login-link">Login</a>
-        </nav>
-    </header>
-    <main>
-        <section id="filter">
-            <label for="price-filter">Max Price:</label>
-            <select id="price-filter">
-                <!-- Options will be populated dynamically -->
-            </select>
-        </section>
-        <section id="places-list">
-            <!-- List of places will be populated dynamically -->
-        </section>
-    </main>
-    <script src="scripts.js"></script>
+<header>
+    <nav>
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="Application Logo">
+        </a>
+        <a href="login.html" class="login-button">Login</a>
+    </nav>
+</header>
+<main>
+    <section id="filter" class="filter-section">
+        <h2>Filter Places</h2>
+        <label for="price-filter">Max Price:</label>
+        <select id="price-filter">
+            <option value="50">$50</option>
+            <option value="100">$100</option>
+            <option value="150">$150</option>
+            <option value="200">$200</option>
+        </select>
+    </section>
+
+    <section id="places-list" class="places-section">
+        <h2>Available Places</h2>
+        <!-- Sample place card -->
+        <div class="place-card">
+            <h3>Cozy Beach House</h3>
+            <p>Price: $120 per night</p>
+            <button class="details-button" onclick="window.location.href='place.html';">View Details</button>
+        </div>
+        <div class="place-card">
+            <h3>Mountain Retreat</h3>
+            <p>Price: $180 per night</p>
+            <button class="details-button" onclick="window.location.href='place.html';">View Details</button>
+        </div>
+        <!-- Dynamic content will be loaded here -->
+    </section>
+</main>
+<footer>
+    <p>&copy; 2024 All rights reserved.</p>
+</footer>
+<script src="scripts.js"></script>
 </body>
 </html>

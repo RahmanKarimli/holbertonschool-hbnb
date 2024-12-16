@@ -2,9 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Review</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
+<header>
+    <nav>
+        <a href="index.html" class="logo">
+            <img src="images/logo.png" alt="Application Logo">
+        </a>
+        <a href="index.html" class="back-button">Back to Places</a>
+    </nav>
+</header>
+<main>
+    <section id="review-place">
+        <h2>Reviewing: <span id="place-name">Cozy Beach House</span></h2>
+    </section>
+    <form id="review-form" class="form-card">
+        <h2>Add a Review</h2>
+        <label for="review">Your Review:</label>
+        <textarea id="review" name="review" placeholder="Write your review here..." required></textarea>
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating" required>
+            <option value="">Select a rating</option>
+            <option value="1">1 - Very Poor</option>
+            <option value="2">2 - Poor</option>
+            <option value="3">3 - Average</option>
+            <option value="4">4 - Good</option>
+            <option value="5">5 - Excellent</option>
+        </select>
+        <button type="submit">Submit Review</button>
+    </form>
+</main>
+<footer>
+    <p>&copy; 2024 All rights reserved.</p>
+</footer>
+<script src="scripts.js"></script>
 </body>
 </html>
