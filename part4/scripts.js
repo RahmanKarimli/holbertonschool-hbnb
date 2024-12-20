@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({email, password})
+      body: JSON.stringify({email: email, password: password})
     });
     if (response.ok) {
       const data = await response.json();
