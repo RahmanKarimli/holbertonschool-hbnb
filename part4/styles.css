@@ -52,6 +52,10 @@ header .login-button:hover {
     background-color: #0056b3;
 }
 
+header #login-link {
+    display: block;
+}
+
 /* Main Sections */
 main {
     padding: 2rem;

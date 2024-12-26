@@ -12,34 +12,23 @@
         <a href="index.html" class="logo">
             <img src="images/logo.png" alt="Application Logo">
         </a>
-        <a href="login.html" class="login-button">Login</a>
+        <a href="login.html" id="login-link" class="login-button">Login</a>
     </nav>
 </header>
 <main>
+    <h2>Filter Places</h2>
+    <label for="price-filter">Max Price:</label>
     <section id="filter" class="filter-section">
-        <h2>Filter Places</h2>
-        <label for="price-filter">Max Price:</label>
         <select id="price-filter">
+            <option value="All">All</option>
+            <option value="10">$10</option>
             <option value="50">$50</option>
             <option value="100">$100</option>
-            <option value="150">$150</option>
-            <option value="200">$200</option>
         </select>
     </section>
 
+    <h2>Available Places</h2>
     <section id="places-list" class="places-section">
-        <h2>Available Places</h2>
-        <!-- Sample place card -->
-        <div class="place-card">
-            <h3>Cozy Beach House</h3>
-            <p>Price: $120 per night</p>
-            <button class="details-button" onclick="window.location.href='place.html';">View Details</button>
-        </div>
-        <div class="place-card">
-            <h3>Mountain Retreat</h3>
-            <p>Price: $180 per night</p>
-            <button class="details-button" onclick="window.location.href='place.html';">View Details</button>
-        </div>
         <!-- Dynamic content will be loaded here -->
     </section>
 </main>
