@@ -3,6 +3,7 @@ from flask_restx import Api
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 
 from config import DevelopmentConfig
 
@@ -13,6 +14,7 @@ db = SQLAlchemy()
 
 def create_app(config_class=DevelopmentConfig):
     app = Flask(__name__)
+    CORS(app)
 
     app.config.from_object(config_class)
 

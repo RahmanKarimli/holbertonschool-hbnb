@@ -70,7 +70,7 @@ class HBnBFacade:
     def create_place(self, place_data):
         # Placeholder for logic to create a place, including validation for price, latitude, and longitude
         title = place_data['title']
-        description = place_data['description']
+        description = place_data.get('description', "")
         price = place_data['price']
         latitude = place_data['latitude']
         longitude = place_data['longitude']

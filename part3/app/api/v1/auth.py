@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from part3.app.services import facade
 
 api = Namespace('auth', description='Authentication operations')
@@ -30,3 +30,12 @@ class Login(Resource):
 
         # Step 4: Return the JWT token to the client
         return {'access_token': access_token}, 200
+
+@api.route("/verify")
+class Verify(Resource):
+    @jwt_required()
+    def post(self):
+        user_identity = get_jwt_identity()
+        if user_identity:
+            return {"message": "Token is valid", "user": user_identity}, 200
+        return {"message": "Invalid token"}, 401

@@ -64,7 +64,7 @@ class PlaceList(Resource):
         """Retrieve a list of all places"""
         # Placeholder for logic to return a list of all places
         places = facade.get_all_places()
-        return [{'id': place.id, 'title': place.title,
+        return [{'id': place.id, 'title': place.title, 'price': place.price,
                  'latitude': place.latitude, 'longitude': place.longitude, } for place in places], 200
 
 
