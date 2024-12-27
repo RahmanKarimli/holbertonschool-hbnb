@@ -3,7 +3,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const loginForm = document.getElementById('login-form');
 
-  if (document.location.href.includes("index.html")) {
+  const isPlacePage = document.location.href.includes("place.html");
+  const isIndexPage = document.location.href.includes("index.html");
+
+  if (isIndexPage) {
     fetchPlaces();
 
     document.getElementById('price-filter').addEventListener('change', (event) => {
@@ -18,15 +21,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  checkAuthentication();
+  if (isPlacePage || isIndexPage) {
+    checkAuthentication();
+  }
 
   if (loginForm) {
     loginForm.addEventListener('submit', async (event) => {
       event.preventDefault();
-      const email = document.getElementById("email").value
-      const password = document.getElementById("password").value
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-      await loginUser(email, password)
+      await loginUser(email, password);
     });
   }
 
@@ -46,37 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function checkAuthentication() {
-    const loginLink = document.getElementById("login-link");
-    const token = getCookie('tokenJWT');
-
-    if (!loginLink) {
-      console.error('Login link not found!');
-      return;
-    }
-
-    if (!token) {
-      loginLink.style.display = 'block';
-    } else {
-      fetch("http://127.0.0.1:8000/api/v1/auth/verify", {
-        method: "POST", headers: {
-          "Authorization": `Bearer ${token}`,
-        }
-      })
-        .then(response => {
-          if (response.ok) {
-            loginLink.style.display = 'none';
-          } else {
-            document.cookie = 'tokenJWT=';
-            window.location.href = 'http://localhost:63342/AirBnb/part4/login.html';
-          }
-        })
-        .catch(() => {
-          document.cookie = 'tokenJWT=';
-          window.location.href = 'http://localhost:63342/AirBnb/part4/login.html';
-        });
-    }
-  }
+  //
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -88,13 +63,63 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
+  function checkAuthentication() {
+    const loginLink = document.getElementById("login-link");
+    const addReviewSection = document.getElementById('add-review');
+    const token = getCookie('tokenJWT');
+
+    if (!loginLink) {
+      console.error('Login link not found!');
+      return;
+    }
+    if (isPlacePage) {
+      if (!addReviewSection) {
+        console.error('Add review section not found!');
+        return;
+      }
+    }
+
+    if (!token) {
+      loginLink.style.display = 'block';
+      if (isPlacePage) {
+        addReviewSection.style.display = 'none';
+      }
+    } else {
+      fetch("http://127.0.0.1:8000/api/v1/auth/verify", {
+        method: "POST", headers: {
+          "Authorization": `Bearer ${token}`,
+        }
+      })
+        .then(response => {
+          if (response.ok) {
+            loginLink.style.display = 'none';
+            if (isPlacePage) {
+              addReviewSection.style.display = 'block';
+            }
+          } else {
+            document.cookie = 'tokenJWT=';
+            window.location.href = 'http://localhost:63342/AirBnb/part4/login.html';
+          }
+        })
+        .catch(() => {
+          document.cookie = 'tokenJWT=';
+          window.location.href = 'http://localhost:63342/AirBnb/part4/login.html';
+        });
+    }
+    if (isPlacePage) {
+      const placeId = getPlaceIdFromURL();
+      fetchPlaceDetails(placeId);
+    }
+  }
+
+
   async function fetchPlaces() {
     fetch("http://127.0.0.1:8000/api/v1/places", {
       method: "GET",
     })
       .then(async response => {
         if (response.ok) {
-          placeResponse = await response.json();
+          const placeResponse = await response.json();
           allPlaces = placeResponse;
           displayPlaces(placeResponse);
         } else {
@@ -108,20 +133,62 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function displayPlaces(places) {
-    let places_list = document.getElementById("places-list");
+    const places_list = document.getElementById("places-list");
     places_list.innerHTML = '';
 
     places.forEach(place => {
-      placeDiv = document.createElement('div');
+      const placeDiv = document.createElement('div');
 
-      placeDiv.className = "place-card"
+      let url = new URL("http://localhost:63342/AirBnb/part4/place.html");
+      url.searchParams.append('place_id', place.id);
+
+      placeDiv.className = "place-card";
       placeDiv.innerHTML = `
             <h3>${place.title}</h3>
             <p>Price: $${place.price} per night</p>
-            <button class="details-button" onclick="window.location.href='place.html';">View Details</button>
+            <button class="details-button" onclick="window.location.href='${url.href}'">View Details</button>
         `
-
       places_list.appendChild(placeDiv);
     })
+  }
+
+  function getPlaceIdFromURL() {
+    const search = window.location.search;
+    const params = new URLSearchParams(search);
+
+    return params.get("place_id");
+  }
+
+  async function fetchPlaceDetails(placeId) {
+    fetch(`http://127.0.0.1:8000/api/v1/places/${placeId}`, {
+      method: "GET",
+    })
+      .then(async response => {
+        if (response.ok) {
+          const placeResponseById = await response.json();
+          displayPlaceDetails(placeResponseById);
+        } else {
+          throw new Error('Failed to fetch place');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        alert('Error fetching place.');
+      });
+  }
+
+  function displayPlaceDetails(place) {
+    const placeDetails = document.getElementById("place-details");
+    placeDetails.innerHTML = '';
+
+    const placeDiv = document.createElement('div');
+
+    placeDiv.className = "card place-card";
+    placeDiv.innerHTML = `
+            <h2>${place.title}</h2>
+            <p>Description: ${place.description}</p>
+            <p>Location: ${place.latitude}  ${place.longitude}</p>
+            `
+    placeDetails.append(placeDiv);
   }
 });
